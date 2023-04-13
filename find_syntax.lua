@@ -6,8 +6,14 @@ local function isPythonFunctionDefLine(line)
 end
 
 
+local function isPythonClassDefLine(line)
+    local indent_level, class_name = string.match(line, "(%s*)class%s*([%w_]+)%(?.*")
+    return indent_level, class_name
+end
+
+
 local function isPythonDefLine(line)
-    return isPythonFunctionDefLine(line)
+    return isPythonFunctionDefLine(line) or isPythonClassDefLine(line)
 end
 
 
@@ -42,7 +48,6 @@ local function scanDefiningLine(line, line_number, structures_dictionary)
         structures_dictionary.functions[function_name] = makeFunction(line_number, nil, function_name, indent_level)
     end
     return function_name
-    -- structures_dictionary.classes.function_name = { indent_level  }
 end
 
 
@@ -85,8 +90,7 @@ function ParsePythonFile(file_path)
 end
 
 
--- printDict(st)
 
 local str = ParsePythonFile("test.py")
 
-myutils.PrintDictOfDicts(str.functions)
+myutils.printDictOfDicts(str.functions)
