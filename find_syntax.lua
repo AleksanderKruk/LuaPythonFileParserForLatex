@@ -1,18 +1,4 @@
-
-local function printDict(dictionary)
-    for key, value in pairs(dictionary) do
-        print(key .. " : " .. value)
-    end
-end
-
-
-local function printDictOfDicts(dictionary)
-    for key, value in pairs(dictionary) do
-        print(key)
-        printDict(value)
-    end
-end
-
+local myutils = require("myutils")
 
 local function isPythonFunctionDefLine(line)
     local indent_level, function_name = string.match(line, "(%s*)def%s*([%w_]+)%(.*")
@@ -102,3 +88,5 @@ end
 -- printDict(st)
 
 local str = ParsePythonFile("test.py")
+
+myutils.PrintDictOfDicts(str.functions)
