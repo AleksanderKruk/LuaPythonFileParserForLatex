@@ -1,18 +1,33 @@
 
 local myutils = {}
 
-function myutils.PrintDict(dictionary)
+function myutils.printDict(dictionary)
     for key, value in pairs(dictionary) do
         print(key .. " : " .. value)
     end
 end
 
 
-function myutils.PrintDictOfDicts(dictionary)
+function myutils.printDictOfDicts(dictionary)
     for key, value in pairs(dictionary) do
         print(key)
-        myutils.PrintDict(value)
+        myutils.printDict(value)
     end
 end
+
+
+function myutils.loadLines(file_path)
+    local file = io.open(file_path)
+    local file_lines = {}
+    if file then
+        for line in file:lines() do
+            table.insert(file_lines, line)
+        end
+        file:close()
+    end
+    return file_lines
+end
+
+
 
 return myutils
