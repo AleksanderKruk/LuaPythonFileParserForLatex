@@ -81,13 +81,13 @@ function ParsePythonFile(file_path)
     while line_counter ~= #all_lines + 1 do
         local def_line = all_lines[line_counter]
         local structure_name = scanDefiningLine(def_line, line_counter, structures)
-        print("Przed sprawdzeniem " .. line_counter)
         if structure_name then
             line_counter = line_counter + 1
-            print("Po sprawdzeniu " .. line_counter)
-            while line_counter ~= #all_lines + 1 and isPythonContinutationLine(all_lines[line_counter]) 
+            while
+                line_counter ~= #all_lines + 1
+                and
+                isPythonContinutationLine(all_lines[line_counter])
             do
-                print("Iteracja " .. line_counter)
                 line_counter = line_counter + 1
             end
             line_counter = line_counter - 1
@@ -102,17 +102,3 @@ end
 -- printDict(st)
 
 local str = ParsePythonFile("test.py")
--- print(str.functions["no_argument"])
--- printDict(str.functions["no_argument"])
--- printDict(str.functions["multi_line"])
--- print(str.functions["multi_line"])
--- printDictOfDicts(str.functions)
--- printDict(str.functions)
--- local testowa = {}
--- testowa.a = "a"
--- testowa.b = nil
--- testowa[nil] = nil
-
--- print(testowa[nil])
-
--- Definicje funkcji i zmiennych
