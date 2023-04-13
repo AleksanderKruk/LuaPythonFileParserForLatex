@@ -51,40 +51,38 @@ local function scanDefiningLine(line, line_number, structures_dictionary)
 end
 
 
-local function loadLines(file_path)
-    local file = io.open(file_path)
-    local file_lines = {}
-    if file then
-        for line in file:lines() do
-            table.insert(file_lines, line)
-        end
-        file:close()
+
+local function searchForEndOfStructure(all_lines, line_counter, structures, structure_name)
+    line_counter = line_counter + 1
+    while
+        line_counter ~= #all_lines + 1 
+        and
+        isPythonContinutationLine(all_lines[line_counter])
+    do
+        line_counter = line_counter + 1
     end
-    return file_lines
+    line_counter = line_counter - 1
+    structures.functions[structure_name].end_line = line_counter
+    return line_counter
 end
 
 
+local function searchForStructure(all_lines, line_counter, structures)
+    local def_line = all_lines[line_counter]
+    local structure_name = scanDefiningLine(def_line, line_counter, structures)
+    if structure_name then
+        line_counter = searchForEndOfStructure(all_lines, line_counter, structures, structure_name)
+    end
+    line_counter = line_counter + 1
+    return line_counter
+end
 
 function ParsePythonFile(file_path)
-    local all_lines = loadLines(file_path)
+    local all_lines = myutils.loadLines(file_path)
     local structures = makeEmptyStructureDictionary()
     local line_counter = 1
     while line_counter ~= #all_lines + 1 do
-        local def_line = all_lines[line_counter]
-        local structure_name = scanDefiningLine(def_line, line_counter, structures)
-        if structure_name then
-            line_counter = line_counter + 1
-            while
-                line_counter ~= #all_lines + 1
-                and
-                isPythonContinutationLine(all_lines[line_counter])
-            do
-                line_counter = line_counter + 1
-            end
-            line_counter = line_counter - 1
-            structures.functions[structure_name].end_line = line_counter
-        end
-        line_counter = line_counter + 1
+        line_counter = searchForStructure(all_lines, line_counter, structures)
     end
     return structures
 end
