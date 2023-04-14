@@ -38,9 +38,27 @@ function myutils.ifNil(examined_value, new_value)
 end
 
 
+function myutils.ifNilTrue(examined_value)
+    return myutils.ifNil(examined_value, true)
+end
+
+
+function myutils.ifNilFalse(examined_value)
+    return myutils.ifNil(examined_value, false)
+end
+
+
+function myutils.ifNilZero(examined_value)
+    return myutils.ifNil(examined_value, false)
+end
+
+
+
 function myutils.ifNilDict(examined_value)
     return myutils.ifNil(examined_value, {})
 end
+
+
 
 
 
