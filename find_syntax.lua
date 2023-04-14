@@ -1,4 +1,5 @@
 local myutils = require("myutils")
+local PFP = require("PythonFileParser")
 
 local function isPythonFunctionDefLine(line)
     local indent_level, function_name = string.match(line, "(%s*)def%s*([%w_]+)%(.*")
@@ -30,17 +31,6 @@ local function makeFunction(start_line, end_line, function_name, indent_level)
     }
 end
 
-local function makeStructureDictionary(functions, classes)
-    return {
-        functions =  functions,
-        classes =  classes,
-    }
-end
-
-
-local function makeEmptyStructureDictionary()
-    return makeStructureDictionary({}, {})
-end
 
 local function scanDefiningLine(line, line_number, structures_dictionary)
     local indent_level, function_name = isPythonFunctionDefLine(line)
@@ -79,7 +69,7 @@ end
 
 function ParsePythonFile(file_path)
     local all_lines = myutils.loadLines(file_path)
-    local structures = makeEmptyStructureDictionary()
+    local structures = PFP.PythonFileParser:new()
     local line_counter = 1
     while line_counter ~= #all_lines + 1 do
         line_counter = searchForStructure(all_lines, line_counter, structures)
