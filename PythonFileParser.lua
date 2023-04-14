@@ -1,8 +1,6 @@
 local myutils = require "myutils"
 local PyFunStr = require("PythonFunctionStructure")
 local PyLineFs = require("pythonlinefunctions")
-local PyProcessingFs = require("pythonprocessingfunctions")
-local pythonprocessingfunctions = require("pythonprocessingfunctions")
 
 
 local PythonFileParser = {
@@ -85,6 +83,13 @@ function PythonFileParser:trimFunctionText(function_text)
 end
 
 
+function PythonFileParser:trimClassText(function_text)
+  local processed_function_text = myutils.rstrip(function_text)
+  return processed_function_text
+end
+
+
+
 function PythonFileParser:getFunctionText(function_name)
   local loaded_function = self.python_structures.functions[function_name]
   if loaded_function then
@@ -97,10 +102,29 @@ function PythonFileParser:getFunctionText(function_name)
   end
 end
 
+function PythonFileParser:getTextFragmentLines(text_object)
+  local start_line = text_object.start_line
+  local end_line = text_object.end_line
+  return {table.unpack(self.loaded_lines, start_line, end_line)}
+end
+
+function PythonFileParser:getTextFragment(text_object)
+  local lines = self:getTextFragmentLines(text_object)
+  return table.concat(lines, "\n")
+end
+
+function PythonFileParser:getClassText(class_name)
+  local loaded_function = self.python_structures.classes[class_name]
+  if loaded_function then
+    local function_text = self:getTextFragment(class_name)
+    function_text = self:trimClassText(function_text)
+    return function_text
+  end
+end
 
 function PythonFileParser:getStructureText(structure_name)
-  local found_class = self.python_structures.classes[structure_name]
-  local found_function = self.python_structures.functions[structure_name]
+  local found_class = self:getClassText(structure_name)
+  local found_function = self:getFunctionText(structure_name)
   if found_class then
     return found_class
   elseif found_function then
@@ -109,3 +133,5 @@ function PythonFileParser:getStructureText(structure_name)
 
 end
 return PythonFileParser
+
+
