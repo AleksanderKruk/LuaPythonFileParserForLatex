@@ -49,7 +49,7 @@ end
 
 
 function myutils.ifNilZero(examined_value)
-    return myutils.ifNil(examined_value, false)
+    return myutils.ifNil(examined_value, 0)
 end
 
 
