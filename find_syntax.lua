@@ -69,7 +69,7 @@ end
 
 function ParsePythonFile(file_path)
     local all_lines = myutils.loadLines(file_path)
-    local structures = PFP.PythonFileParser:new()
+    local structures = PFP:new()
     local line_counter = 1
     while line_counter ~= #all_lines + 1 do
         line_counter = searchForStructure(all_lines, line_counter, structures)
