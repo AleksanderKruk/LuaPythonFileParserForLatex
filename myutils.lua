@@ -61,7 +61,19 @@ function myutils.ifNilDict(examined_value)
     return myutils.ifNil(examined_value, {})
 end
 
+function myutils.strip(string)
+  return string:match "%s*(.-)%s*"
+end
 
+
+function myutils.rstrip(string)
+  return string:match "(.-)%s*"
+end
+
+
+function myutils.lstrip(string)
+  return string:match "%s*(.-)"
+end
 
 
 
