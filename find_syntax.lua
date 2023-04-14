@@ -1,6 +1,6 @@
 local myutils = require("myutils")
 local PFP = require("PythonFileParser")
-local PFfunctions = require("pythonfilefunctions")
+local PLfunctions = require("pythonlinefunctions")
 
 local function makeFunction(start_line, end_line, function_name, indent_level)
     return {
@@ -13,7 +13,7 @@ end
 
 
 local function scanDefiningLine(line, line_number, structures_dictionary)
-    local indent_level, function_name = PFfunctions.isPythonFunctionDefLine(line)
+    local indent_level, function_name = PLfunctions.isPythonFunctionDefLine(line)
     if function_name then
         structures_dictionary.functions[function_name] = makeFunction(line_number, nil, function_name, indent_level)
     end
@@ -27,7 +27,7 @@ local function searchForEndOfStructure(all_lines, line_counter, structures, stru
     while
         line_counter ~= #all_lines + 1 
         and
-        PFfunctions.isPythonContinutationLine(all_lines[line_counter])
+        PLfunctions.isPythonContinutationLine(all_lines[line_counter])
     do
         line_counter = line_counter + 1
     end
