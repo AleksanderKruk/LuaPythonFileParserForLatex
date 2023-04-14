@@ -1,6 +1,8 @@
 local myutils = require "myutils"
 local PyFunStr = require("PythonFunctionStructure")
-local PyLinefs = require("pythonlinefunctions")
+local PyLineFs = require("pythonlinefunctions")
+local PyProcessingFs = require("pythonprocessingfunctions")
+local pythonprocessingfunctions = require("pythonprocessingfunctions")
 
 
 local PythonFileParser = {
@@ -8,7 +10,7 @@ local PythonFileParser = {
     classes = {},
     functions = {},
   },
-  loaded_files = {},
+  loaded_lines = {},
   last_scanned_line = "",
   last_scanned_lineno = 1,
 }
@@ -34,7 +36,7 @@ end
 
 
 function PythonFileParser:scanDefiningLine()
-  local indent_level, function_name = PyLinefs.isPythonFunctionDefLine(self:getLastScannedLine())
+  local indent_level, function_name = PyLineFs.isPythonFunctionDefLine(self:getLastScannedLine())
   if function_name then
     self.python_structures.functions[function_name] = PyFunStr:new(
       self.last_scanned_lineno, nil, function_name, indent_level)
@@ -48,7 +50,7 @@ function PythonFileParser:searchForEndOfStructure(structure_name)
   while
     self.last_scanned_lineno ~= #self.loaded_lines + 1 
     and
-    PyLinefs.isPythonContinutationLine(self.loaded_lines[self.last_scanned_lineno])
+    PyLineFs.isPythonContinutationLine(self.loaded_lines[self.last_scanned_lineno])
   do
     self.last_scanned_lineno = self.last_scanned_lineno + 1
   end
@@ -77,4 +79,33 @@ function PythonFileParser:parseFile(file_path)
 end
 
 
+function PythonFileParser:trimFunctionText(function_text)
+  local processed_function_text = myutils.rstrip(function_text)
+  return processed_function_text
+end
+
+
+function PythonFileParser:getFunctionText(function_name)
+  local loaded_function = self.python_structures.functions[function_name]
+  if loaded_function then
+    local start_line = loaded_function.start_line
+    local end_line = loaded_function.end_line
+    local function_lines = {table.unpack(self.loaded_lines, start_line, end_line)}
+    local function_text = table.concat(function_lines, "\n")
+    function_text = self:trimFunctionText(function_text)
+    return function_text
+  end
+end
+
+
+function PythonFileParser:getStructureText(structure_name)
+  local found_class = self.python_structures.classes[structure_name]
+  local found_function = self.python_structures.functions[structure_name]
+  if found_class then
+    return found_class
+  elseif found_function then
+    return found_function
+  end
+
+end
 return PythonFileParser

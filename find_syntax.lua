@@ -1,9 +1,13 @@
 local myutils = require("myutils")
-local PFP = require("PythonFileParser")
-local PyFunStr = require("PythonFunctionStructure")
-local PyLinefs = require("pythonlinefunctions")
+local PythonFileParser = require("PythonFileParser")
 
-local parser = PFP:new()
-local str = parser:parseFile("test.py")
+local parser = PythonFileParser:new()
+local found_structures = parser:parseFile("test.py")
 
-myutils.printDictOfDicts(str.functions)
+local text = parser:getFunctionText("no_argument")
+local text2 = parser:getFunctionText("multi_line")
+
+
+print(text)
+print(text2)
+-- myutils.printDictOfDicts(found_structures.functions)
