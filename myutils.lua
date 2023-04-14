@@ -29,5 +29,10 @@ function myutils.loadLines(file_path)
 end
 
 
+function myutils.ifNotNil(examined_value, new_value)
+    
+end
+
+
 
 return myutils
