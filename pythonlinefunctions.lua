@@ -19,7 +19,7 @@ function pythonlinefunctions.isPythonDefLine(line)
 end
 
 
-function pythonlinefunctions.sisPythonContinutationLine(line)
+function pythonlinefunctions.isPythonContinutationLine(line)
     return not pythonlinefunctions.isPythonDefLine(line)
 end
 
