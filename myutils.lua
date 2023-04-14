@@ -29,8 +29,17 @@ function myutils.loadLines(file_path)
 end
 
 
-function myutils.ifNotNil(examined_value, new_value)
-    
+function myutils.ifNil(examined_value, new_value)
+  if examined_value == nil then
+    return new_value
+  else
+    return examined_value
+  end
+end
+
+
+function myutils.ifNilDict(examined_value)
+    return myutils.ifNil(examined_value, {})
 end
 
 
