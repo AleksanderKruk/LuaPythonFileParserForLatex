@@ -53,6 +53,9 @@ function myutils.ifNilZero(examined_value)
 end
 
 
+function myutils.ifNilEmptyString(examined_value)
+    return myutils.ifNil(examined_value, "")
+end
 
 function myutils.ifNilDict(examined_value)
     return myutils.ifNil(examined_value, {})
