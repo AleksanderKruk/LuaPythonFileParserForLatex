@@ -2,16 +2,6 @@ local myutils = require("myutils")
 local PFP = require("PythonFileParser")
 local PLfunctions = require("pythonlinefunctions")
 
-local function makeFunction(start_line, end_line, function_name, indent_level)
-    return {
-        start_line = start_line,
-        end_line = end_line,
-        name = function_name,
-        indent_level =  indent_level,
-    }
-end
-
-
 local function scanDefiningLine(line, line_number, structures_dictionary)
     local indent_level, function_name = PLfunctions.isPythonFunctionDefLine(line)
     if function_name then
