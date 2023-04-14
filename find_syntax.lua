@@ -1,26 +1,6 @@
 local myutils = require("myutils")
 local PFP = require("PythonFileParser")
-
-local function isPythonFunctionDefLine(line)
-    local indent_level, function_name = string.match(line, "(%s*)def%s*([%w_]+)%(.*")
-    return indent_level, function_name
-end
-
-
-local function isPythonClassDefLine(line)
-    local indent_level, class_name = string.match(line, "(%s*)class%s*([%w_]+)%(?.*")
-    return indent_level, class_name
-end
-
-
-local function isPythonDefLine(line)
-    return isPythonFunctionDefLine(line) or isPythonClassDefLine(line)
-end
-
-
-local function isPythonContinutationLine(line)
-    return not isPythonDefLine(line)
-end
+local PFfunctions = require("pythonfilefunctions")
 
 local function makeFunction(start_line, end_line, function_name, indent_level)
     return {
@@ -33,7 +13,7 @@ end
 
 
 local function scanDefiningLine(line, line_number, structures_dictionary)
-    local indent_level, function_name = isPythonFunctionDefLine(line)
+    local indent_level, function_name = PFfunctions.isPythonFunctionDefLine(line)
     if function_name then
         structures_dictionary.functions[function_name] = makeFunction(line_number, nil, function_name, indent_level)
     end
@@ -47,7 +27,7 @@ local function searchForEndOfStructure(all_lines, line_counter, structures, stru
     while
         line_counter ~= #all_lines + 1 
         and
-        isPythonContinutationLine(all_lines[line_counter])
+        PFfunctions.isPythonContinutationLine(all_lines[line_counter])
     do
         line_counter = line_counter + 1
     end
@@ -66,6 +46,7 @@ local function searchForStructure(all_lines, line_counter, structures)
     line_counter = line_counter + 1
     return line_counter
 end
+
 
 function ParsePythonFile(file_path)
     local all_lines = myutils.loadLines(file_path)
