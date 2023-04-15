@@ -1,6 +1,7 @@
 local myutils = require "myutils"
 local PyFunStr = require("PythonFunctionStructure")
 local PyLineFs = require("pythonlinefunctions")
+local latexintegrationfunctions = require("latexintegrationfunctions")
 
 
 local PythonFileParser = {
@@ -93,10 +94,7 @@ end
 function PythonFileParser:getFunctionText(function_name)
   local loaded_function = self.python_structures.functions[function_name]
   if loaded_function then
-    local start_line = loaded_function.start_line
-    local end_line = loaded_function.end_line
-    local function_lines = {table.unpack(self.loaded_lines, start_line, end_line)}
-    local function_text = table.concat(function_lines, "\n")
+    local function_text = self:getTextFragment(function_name)
     function_text = self:trimFunctionText(function_text)
     return function_text
   end
@@ -117,11 +115,22 @@ end
 
 
 function PythonFileParser:getClassText(class_name)
-  local loaded_function = self.python_structures.classes[class_name]
-  if loaded_function then
-    local function_text = self:getTextFragment(class_name)
+  local loaded_class = self.python_structures.classes[class_name]
+  if loaded_class then
+    local function_text = self:getTextFragment(loaded_class)
     function_text = self:trimClassText(function_text)
     return function_text
+  end
+end
+
+
+function PythonFileParser:getStructure(structure_name)
+  local loaded_function = self.python_structures.functions[structure_name]
+  local loaded_class = self.python_structures.classes[structure_name]
+  if loaded_function then
+    return loaded_function
+  elseif loaded_class then
+    return loaded_class
   end
 end
 
@@ -135,6 +144,21 @@ function PythonFileParser:getStructureText(structure_name)
     return found_function
   end
 end
+
+
+function PythonFileParser:makeListing(structure_name)
+  local structure = self:getStructure(structure_name)
+  if structure then
+    local structure_text = self:getStructureText(structure_name)
+    local range = "linerange={" .. structure.start_line .. "," .. structure.end_line  .. "}]"
+    local latex_text = latexintegrationfunctions.toEnvironment(structure_text, "lstlisting", range)
+    return latex_text
+    
+  end
+end
+
+
+
 return PythonFileParser
 
 
