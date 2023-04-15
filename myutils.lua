@@ -76,5 +76,25 @@ function myutils.lstrip(string)
 end
 
 
+function myutils.bracketify(string, left_bracket, right_bracket)
+  return left_bracket .. string .. right_bracket
+end
+
+
+function myutils.addParentheses(string)
+  return myutils.bracketify(string, "(", ")")
+end
+
+
+function myutils.addSquareBrackets(string)
+  return myutils.bracketify(string, "[", "]")
+end
+
+
+function myutils.addCurlyBrackets(string)
+  return myutils.bracketify(string, "{", "}")
+end
+
+
 
 return myutils
