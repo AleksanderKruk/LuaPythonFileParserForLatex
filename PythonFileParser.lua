@@ -28,7 +28,7 @@ function PythonFileParser:new()
 end
 
 
-function PythonFileParser:getLastScannedLine(functions, classes)
+function PythonFileParser:getLastScannedLine()
   return self.loaded_lines[self.last_scanned_lineno]
 end
 
@@ -46,7 +46,7 @@ end
 function PythonFileParser:searchForEndOfStructure(structure_name)
   self.last_scanned_lineno = self.last_scanned_lineno + 1
   while
-    self.last_scanned_lineno ~= #self.loaded_lines + 1 
+    self.last_scanned_lineno ~= #self.loaded_lines + 1
     and
     PyLineFs.isPythonContinutationLine(self.loaded_lines[self.last_scanned_lineno])
   do
@@ -102,16 +102,19 @@ function PythonFileParser:getFunctionText(function_name)
   end
 end
 
+
 function PythonFileParser:getTextFragmentLines(text_object)
   local start_line = text_object.start_line
   local end_line = text_object.end_line
   return {table.unpack(self.loaded_lines, start_line, end_line)}
 end
 
+
 function PythonFileParser:getTextFragment(text_object)
   local lines = self:getTextFragmentLines(text_object)
   return table.concat(lines, "\n")
 end
+
 
 function PythonFileParser:getClassText(class_name)
   local loaded_function = self.python_structures.classes[class_name]
@@ -122,6 +125,7 @@ function PythonFileParser:getClassText(class_name)
   end
 end
 
+
 function PythonFileParser:getStructureText(structure_name)
   local found_class = self:getClassText(structure_name)
   local found_function = self:getFunctionText(structure_name)
@@ -130,7 +134,6 @@ function PythonFileParser:getStructureText(structure_name)
   elseif found_function then
     return found_function
   end
-
 end
 return PythonFileParser
 
