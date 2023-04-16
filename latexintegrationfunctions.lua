@@ -8,12 +8,8 @@ function latexintegrationfunctions.toEnvironment(text, environment_name, optiona
     latex_text = latex_text .. myutils.addSquareBrackets(optional_args)
   end
   latex_text = latex_text .. "\n" .. text .. "\n\\end" .. braced_environment_name
-  -- if optional_args then
-  --   latex_text = latex_text .. "[" .. optional_args .. "]"
-  -- end
   return latex_text
 end
-
 
 
 
