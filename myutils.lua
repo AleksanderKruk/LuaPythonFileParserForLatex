@@ -133,4 +133,17 @@ function myutils.startWith(local_string, beginning)
 end
 
 
+function myutils.split(local_string, separator)
+    if separator == nil then
+      separator = "%s"
+    end
+    local table = {} 
+    for str in string.gmatch(local_string, "([^"..separator.."]+)") do
+        table.insert(table, str)
+    end
+    return table
+end
+
+
+
 return myutils
