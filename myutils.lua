@@ -116,9 +116,21 @@ end
 function myutils.endsWith(local_string, ending)
   local current_ending = string.sub(local_string, -string.len(ending))
   return ending == current_ending
-
 end
 
+
+function myutils.startsWith(local_string, beginning)
+  local current_ending = string.sub(local_string, string.len(beginning))
+  return beginning == current_ending
+end
+
+
+function myutils.startWith(local_string, beginning)
+  if not myutils.startsWith(local_string) then
+    local_string = beginning .. local_string 
+  end
+  return local_string
+end
 
 
 return myutils
