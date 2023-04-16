@@ -94,7 +94,7 @@ end
 function PythonFileParser:getFunctionText(function_name)
   local loaded_function = self.python_structures.functions[function_name]
   if loaded_function then
-    local function_text = self:getTextFragment(function_name)
+    local function_text = self:getTextFragment(loaded_function)
     function_text = self:trimFunctionText(function_text)
     return function_text
   end
