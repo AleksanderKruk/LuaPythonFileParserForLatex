@@ -96,5 +96,29 @@ function myutils.addCurlyBrackets(string)
 end
 
 
+function myutils.endWith(local_string, ending)
+  if not myutils.endsWith(local_string) then
+    local_string = local_string .. ending
+    -- local current_ending = local_string.sub(local_string, -string.len(ending))
+    -- for current_char_index = 1, #ending do
+    --   local current_char = current_ending:sub(current_char_index, current_char_index)
+    --   for ending_char_index = 1, #ending do
+    --     local ending_char = current_ending:sub(ending_char_index, ending_char_index)
+    --     if ending_char ~= current_char then
+          
+    --     end
+    --   end
+    -- end
+  end
+  return local_string
+end
+
+function myutils.endsWith(local_string, ending)
+  local current_ending = string.sub(local_string, -string.len(ending))
+  return ending == current_ending
+
+end
+
+
 
 return myutils
