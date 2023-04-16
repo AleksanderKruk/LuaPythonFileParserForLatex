@@ -150,10 +150,9 @@ function PythonFileParser:makeListing(structure_name)
   local structure = self:getStructure(structure_name)
   if structure then
     local structure_text = self:getStructureText(structure_name)
-    local range = "linerange={" .. structure.start_line .. "," .. structure.end_line  .. "}]"
+    local range = "linerange=" .. myutils.addCurlyBrackets(structure.start_line .. "-" .. structure.end_line)
     local latex_text = latexintegrationfunctions.toEnvironment(structure_text, "lstlisting", range)
     return latex_text
-    
   end
 end
 
