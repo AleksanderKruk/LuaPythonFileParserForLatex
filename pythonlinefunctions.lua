@@ -4,9 +4,9 @@ local pythonlinefunctions = {}
 
 function pythonlinefunctions.isPythonMain(line)
     if string.match(line, "%s-if%s-__name__%s-==%s-\"__main__\"%s-:.*") then
-        return nil, "__main__"
+        return "", "__main__"
     else
-        return nil
+        return nil, nil
     end
 end
 

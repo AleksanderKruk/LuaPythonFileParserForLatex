@@ -63,7 +63,7 @@ function PythonFileParser:searchForEndOfStructure(structure_name)
   while
     self.last_scanned_lineno ~= #self.loaded_lines + 1
     and
-    PyLineFs.isPythonContinutationLine(self.loaded_lines[self.last_scanned_lineno])
+    PyLineFs.isPythonContinutationLine(self:getLastScannedLine())
   do
     self.last_scanned_lineno = self.last_scanned_lineno + 1
   end
@@ -108,7 +108,7 @@ end
 function PythonFileParser:getFunctionText(function_name)
   local loaded_function = self.python_structures.functions[function_name]
   if loaded_function then
-    local function_text = self:getTextFragment(function_name)
+    local function_text = self:getTextFragment(loaded_function)
     function_text = self:trimFunctionText(function_text)
     return function_text
   end
@@ -167,7 +167,6 @@ function PythonFileParser:makeListing(structure_name)
     local range = "linerange={" .. structure.start_line .. "," .. structure.end_line  .. "}]"
     local latex_text = latexintegrationfunctions.toEnvironment(structure_text, "lstlisting", range)
     return latex_text
-
   end
 end
 
