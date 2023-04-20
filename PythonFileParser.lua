@@ -35,12 +35,26 @@ end
 
 
 function PythonFileParser:scanDefiningLine()
-  local indent_level, function_name = PyLineFs.isPythonFunctionDefLine(self:getLastScannedLine())
+  local last_scanned_line = self:getLastScannedLine()
+  local indent_level, function_name = PyLineFs.isPythonFunctionDefLine(last_scanned_line)
   if function_name then
     self.python_structures.functions[function_name] = PyFunStr:new(
       self.last_scanned_lineno, nil, function_name, indent_level)
+    return function_name
   end
-  return function_name
+  local indent_level, class_name = PyLineFs.isPythonClassDefLine(last_scanned_line)
+  if class_name then
+    -- TODO Create new class for class structure
+    self.python_structures.classes[class_name] = PyFunStr:new(
+      self.last_scanned_lineno, nil, class_name, indent_level)
+    return class_name
+  end
+  local indent_level, main = PyLineFs.isPythonMain(last_scanned_line)
+  if main then
+    self.python_structures.functions[main] = PyFunStr:new(
+      self.last_scanned_lineno, nil, main, indent_level)
+    return main
+  end
 end
 
 
@@ -49,7 +63,7 @@ function PythonFileParser:searchForEndOfStructure(structure_name)
   while
     self.last_scanned_lineno ~= #self.loaded_lines + 1
     and
-    PyLineFs.isPythonContinutationLine(self.loaded_lines[self.last_scanned_lineno])
+    PyLineFs.isPythonContinutationLine(self:getLastScannedLine())
   do
     self.last_scanned_lineno = self.last_scanned_lineno + 1
   end

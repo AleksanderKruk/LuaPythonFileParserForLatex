@@ -3,8 +3,11 @@ local pythonlinefunctions = {}
 
 
 function pythonlinefunctions.isPythonMain(line)
-    local indent_level = string.match(line, "(%s-)if%s-__name__%s-==%s-\"__main__\"%s-:.*")
-    return indent_level, "__main__"
+    if string.match(line, "%s-if%s-__name__%s-==%s-\"__main__\"%s-:.*") then
+        return "", "__main__"
+    else
+        return nil, nil
+    end
 end
 
 
