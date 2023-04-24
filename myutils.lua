@@ -144,6 +144,36 @@ function myutils.split(local_string, separator)
     return table
 end
 
+function myutils.printListing(parser, structure_name)
+  local function_text = parser:getFunctionText(structure_name)
+  local some_function = parser:getStructure(structure_name)
+  
+  local lines = myutils.split(function_text, "\n")
+  
+  tex.print("\\begin{lstlisting}[firstnumber=" .. some_function.start_line .. "]")
+  
+  for i=1, #lines do
+      tex.print(lines[i])
+  end
+  
+  tex.print("\\end{lstlisting}")
+
+end
+
+function myutils.printListingWithCaption(parser, structure_name, caption)
+  local function_text = parser:getFunctionText(structure_name)
+  local some_function = parser:getStructure(structure_name)
+  
+  local lines = myutils.split(function_text, "\n")
+  
+  tex.print("\\begin{lstlisting}[firstnumber=" .. some_function.start_line .. ",caption=" .. caption .. "]")
+  
+  for i=1, #lines do
+      tex.print(lines[i])
+  end
+  
+  tex.print("\\end{lstlisting}")
+end
 
 
 return myutils
