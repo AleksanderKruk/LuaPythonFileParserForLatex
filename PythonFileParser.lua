@@ -61,10 +61,11 @@ end
 function PythonFileParser:searchForEndOfStructure(structure_name)
   repeat
     self.last_scanned_lineno = self.last_scanned_lineno + 1
-  until 
+  until not (
     self.last_scanned_lineno ~= #self.loaded_lines + 1
     and
     PyLineFs.isPythonContinutationLine(self:getLastScannedLine())
+  )
   self.last_scanned_lineno = self.last_scanned_lineno - 1
   self.python_structures.functions[structure_name].end_line = self.last_scanned_lineno
 end
@@ -76,7 +77,6 @@ function PythonFileParser:searchForStructure()
     self:searchForEndOfStructure(structure_name)
   end
   self.last_scanned_lineno = self.last_scanned_lineno + 1
-  return self.last_scanned_lineno
 end
 
 

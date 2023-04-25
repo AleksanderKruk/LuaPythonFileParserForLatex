@@ -10,7 +10,8 @@ local text = parser:getFunctionText("__main__")
 tex = {}
 tex.print = print
 tex.print("aa")
-print(myutils.printListing(parser, "__main__"))
+-- print(myutils.printListing(parser, "__main__"))
+print(myutils.printListingWithCaption(parser, "__main__", "GARNUCH"))
 -- print(text)
 -- print(text)
 -- myutils.printDictOfDicts(found_structures.functions)

@@ -105,7 +105,7 @@ function myutils.endWith(local_string, ending)
     --   for ending_char_index = 1, #ending do
     --     local ending_char = current_ending:sub(ending_char_index, ending_char_index)
     --     if ending_char ~= current_char then
-          
+
     --     end
     --   end
     -- end
@@ -127,7 +127,7 @@ end
 
 function myutils.startWith(local_string, beginning)
   if not myutils.startsWith(local_string) then
-    local_string = beginning .. local_string 
+    local_string = beginning .. local_string
   end
   return local_string
 end
@@ -137,25 +137,25 @@ function myutils.split(local_string, separator)
     if separator == nil then
       separator = "%s"
     end
-    local table = {} 
+    local local_table = {}
     for str in string.gmatch(local_string, "([^"..separator.."]+)") do
-        table.insert(table, str)
+        table.insert(local_table, str)
     end
-    return table
+    return local_table
 end
 
 function myutils.printListing(parser, structure_name)
   local function_text = parser:getFunctionText(structure_name)
   local some_function = parser:getStructure(structure_name)
-  
+
   local lines = myutils.split(function_text, "\n")
-  
+
   tex.print("\\begin{lstlisting}[firstnumber=" .. some_function.start_line .. "]")
-  
+
   for i=1, #lines do
       tex.print(lines[i])
   end
-  
+
   tex.print("\\end{lstlisting}")
 
 end
@@ -163,15 +163,15 @@ end
 function myutils.printListingWithCaption(parser, structure_name, caption)
   local function_text = parser:getFunctionText(structure_name)
   local some_function = parser:getStructure(structure_name)
-  
+
   local lines = myutils.split(function_text, "\n")
-  
+
   tex.print("\\begin{lstlisting}[firstnumber=" .. some_function.start_line .. ",caption=" .. caption .. "]")
-  
+
   for i=1, #lines do
       tex.print(lines[i])
   end
-  
+
   tex.print("\\end{lstlisting}")
 end
 
